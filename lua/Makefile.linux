@@ -1,0 +1,28 @@
+# Makefile for the Lua bindings of nativefiledialog. Use on platforms that wish
+# to use Gtk3 for their dialogs.
+
+GTK_CFLAGS=$(shell pkg-config --cflags gtk+-3.0)
+GTK_LIBS=$(shell pkg-config --libs gtk+-3.0)
+NFD_CFLAGS=-Isrc/include
+
+all: nfd.so
+
+nfd.so: nfd_common.o nfd_gtk.o nfd_wrap_lua.o
+	$(CC) $(LIBFLAG) -o $@ -L$(LUA_LIBDIR) $(GTK_LIBS) $^
+
+nfd_wrap_lua.o: lua/nfd_wrap_lua.c
+	$(CC) -c $(CFLAGS) $(NFD_CFLAGS) -I$(LUA_INCDIR) $(GTK_CFLAGS) $< -o $@
+
+nfd_gtk.o: src/nfd_gtk.c
+	$(CC) -c $(CFLAGS) $(NFD_CFLAGS) -I$(LUA_INCDIR) $(GTK_CFLAGS) $< -o $@
+
+nfd_common.o: src/nfd_common.c
+	$(CC) -c $(CFLAGS) $(NFD_CFLAGS) -I$(LUA_INCDIR) $(GTK_CFLAGS) $< -o $@
+
+.PHONY: clean
+
+clean: 
+	rm nfd_common.o nfd_gtk.o nfd_wrap_lua.o nfd.so
+
+install: nfd.so
+	cp nfd.so $(INST_LIBDIR)
