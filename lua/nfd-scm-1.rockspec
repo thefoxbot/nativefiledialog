@@ -1,34 +1,24 @@
 package = "nfd"
 version = "scm-1"
 source = {
-   url = "*** please add URL for source tarball, zip or repository here ***"
+   url = "git://github.com/Alloyed/nativefiledialog.git"
 }
 description = {
    summary = "A tiny, neat C library that portably invokes native file open and save dialogs.",
    detailed = "A tiny, neat C library that portably invokes native file open and save dialogs.  Write dialog code once and have it pop up native dialogs on all supported platforms.  Avoid linking large dependencies like wxWidgets and qt.",
-   homepage = "*** please enter a project homepage ***",
+   homepage = "https://github.com/Alloyed/nativefiledialog/tree/master/lua",
    license = "zlib"
 }
 dependencies = {
    "lua ~> 5.1"
 }
 -- TODO: We can probably use the linux makefile for freebsd.
-supported_platforms = { "linux", "macosx", "windows" }
+supported_platforms = { "linux", "macosx" }
 external_dependencies = {
    platforms = {
       linux = {
          gtk3 = {
             library = "gtk-3",
-         }
-      },
-      macosx = {
-         --appkit = {
-         --   library = "AppKit",
-         --}
-      },
-      windows = {
-         com = {
-            library = "comctl32.lib",
          }
       }
    }
