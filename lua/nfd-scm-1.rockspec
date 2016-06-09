@@ -22,9 +22,9 @@ external_dependencies = {
          }
       },
       macosx = {
-         appkit = {
-            library = "AppKit",
-         }
+         --appkit = {
+         --   library = "AppKit",
+         --}
       },
       windows = {
          com = {
@@ -64,18 +64,17 @@ build = {
          }
       },
       macosx = {
-         type = "builtin",
-         modules = {
-            nfd = {
-               sources = {
-                  "src/nfd_common.c",
-                  "src/nfd_cocoa.m",
-                  "lua/nfd_wrap_lua.c"
-               },
-               libraries = {"AppKit"},
-               incdirs = {"src/include"}
-            }
-         }
+         type = "make",
+         makefile = "lua/Makefile.osx",
+         build_variables = {
+            CFLAGS="$(CFLAGS)",
+            LIBFLAG="$(LIBFLAG)",
+            LUA_LIBDIR="$(LUA_LIBDIR)",
+            LUA_INCDIR="$(LUA_INCDIR)",
+         },
+         install_variables = {
+            INST_LIBDIR="$(LIBDIR)",
+         },
       }
    }
 }

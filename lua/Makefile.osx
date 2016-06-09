@@ -1,0 +1,27 @@
+# Makefile for the Lua bindings of nativefiledialog. Links to Appkit on Mac OSX
+
+COCOA_CFLAGS=
+COCOA_LIBS=-framework AppKit -lobjc
+NFD_CFLAGS=-Isrc/include
+
+all: nfd.so
+
+nfd.so: nfd_common.o nfd_cocoa.o nfd_wrap_lua.o
+	$(CC) $(LIBFLAG) -o $@ -L$(LUA_LIBDIR) $(COCOA_LIBS) $^
+
+nfd_wrap_lua.o: lua/nfd_wrap_lua.c
+	$(CC) -c $(CFLAGS) $(NFD_CFLAGS) -I$(LUA_INCDIR) $(COCOA_CFLAGS) $< -o $@
+
+nfd_cocoa.o: src/nfd_cocoa.m
+	$(CC) -c $(CFLAGS) $(NFD_CFLAGS) -I$(LUA_INCDIR) $(COCOA_CFLAGS) $< -o $@
+
+nfd_common.o: src/nfd_common.c
+	$(CC) -c $(CFLAGS) $(NFD_CFLAGS) -I$(LUA_INCDIR) $(COCOA_CFLAGS) $< -o $@
+
+.PHONY: clean
+
+clean: 
+	rm nfd_common.o nfd_cocoa.o nfd_wrap_lua.o nfd.so
+
+install: nfd.so
+	cp nfd.so $(INST_LIBDIR)
