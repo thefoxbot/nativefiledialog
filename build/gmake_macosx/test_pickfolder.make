@@ -13,8 +13,8 @@ endif
 ifeq ($(config),release_x64)
   RESCOMP = windres
   TARGETDIR = ../bin
-  TARGET = $(TARGETDIR)/test_opendialogmultiple.exe
-  OBJDIR = ../obj/x64/Release/test_opendialogmultiple
+  TARGET = $(TARGETDIR)/test_pickfolder
+  OBJDIR = ../obj/x64/Release/test_pickfolder
   DEFINES += -DNDEBUG
   INCLUDES += -I../../src/include
   FORCE_INCLUDE +=
@@ -22,9 +22,9 @@ ifeq ($(config),release_x64)
   ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -O2
   ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CFLAGS)
   ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
-  LIBS += ../lib/Release/x64/nfd.lib -lole32 -luuid
-  LDDEPS += ../lib/Release/x64/nfd.lib
-  ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -L../lib/Release/x64 -m64 -s
+  LIBS += ../lib/Release/x64/libnfd.a -framework Foundation -framework AppKit
+  LDDEPS += ../lib/Release/x64/libnfd.a
+  ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -L../lib/Release/x64 -m64 -Wl,-x
   LINKCMD = $(CC) -o "$@" $(OBJECTS) $(RESOURCES) $(ALL_LDFLAGS) $(LIBS)
   define PREBUILDCMDS
   endef
@@ -40,8 +40,8 @@ endif
 ifeq ($(config),release_x86)
   RESCOMP = windres
   TARGETDIR = ../bin
-  TARGET = $(TARGETDIR)/test_opendialogmultiple.exe
-  OBJDIR = ../obj/x86/Release/test_opendialogmultiple
+  TARGET = $(TARGETDIR)/test_pickfolder
+  OBJDIR = ../obj/x86/Release/test_pickfolder
   DEFINES += -DNDEBUG
   INCLUDES += -I../../src/include
   FORCE_INCLUDE +=
@@ -49,9 +49,9 @@ ifeq ($(config),release_x86)
   ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m32 -O2
   ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CFLAGS)
   ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
-  LIBS += ../lib/Release/x86/nfd.lib -lole32 -luuid
-  LDDEPS += ../lib/Release/x86/nfd.lib
-  ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib32 -L../lib/Release/x86 -m32 -s
+  LIBS += ../lib/Release/x86/libnfd.a -framework Foundation -framework AppKit
+  LDDEPS += ../lib/Release/x86/libnfd.a
+  ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib32 -L../lib/Release/x86 -m32 -Wl,-x
   LINKCMD = $(CC) -o "$@" $(OBJECTS) $(RESOURCES) $(ALL_LDFLAGS) $(LIBS)
   define PREBUILDCMDS
   endef
@@ -67,8 +67,8 @@ endif
 ifeq ($(config),debug_x64)
   RESCOMP = windres
   TARGETDIR = ../bin
-  TARGET = $(TARGETDIR)/test_opendialogmultiple_d.exe
-  OBJDIR = ../obj/x64/Debug/test_opendialogmultiple
+  TARGET = $(TARGETDIR)/test_pickfolder_d
+  OBJDIR = ../obj/x64/Debug/test_pickfolder
   DEFINES += -DDEBUG
   INCLUDES += -I../../src/include
   FORCE_INCLUDE +=
@@ -76,7 +76,7 @@ ifeq ($(config),debug_x64)
   ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -g
   ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CFLAGS)
   ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
-  LIBS += -lnfd_d -lole32 -luuid
+  LIBS += -lnfd_d -framework Foundation -framework AppKit
   LDDEPS +=
   ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -L../lib/Debug/x64 -m64
   LINKCMD = $(CC) -o "$@" $(OBJECTS) $(RESOURCES) $(ALL_LDFLAGS) $(LIBS)
@@ -94,8 +94,8 @@ endif
 ifeq ($(config),debug_x86)
   RESCOMP = windres
   TARGETDIR = ../bin
-  TARGET = $(TARGETDIR)/test_opendialogmultiple_d.exe
-  OBJDIR = ../obj/x86/Debug/test_opendialogmultiple
+  TARGET = $(TARGETDIR)/test_pickfolder_d
+  OBJDIR = ../obj/x86/Debug/test_pickfolder
   DEFINES += -DDEBUG
   INCLUDES += -I../../src/include
   FORCE_INCLUDE +=
@@ -103,7 +103,7 @@ ifeq ($(config),debug_x86)
   ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m32 -g
   ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CFLAGS)
   ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
-  LIBS += -lnfd_d -lole32 -luuid
+  LIBS += -lnfd_d -framework Foundation -framework AppKit
   LDDEPS +=
   ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib32 -L../lib/Debug/x86 -m32
   LINKCMD = $(CC) -o "$@" $(OBJECTS) $(RESOURCES) $(ALL_LDFLAGS) $(LIBS)
@@ -119,7 +119,7 @@ all: $(TARGETDIR) $(OBJDIR) prebuild prelink $(TARGET)
 endif
 
 OBJECTS := \
-	$(OBJDIR)/test_opendialogmultiple.o \
+	$(OBJDIR)/test_pickfolder.o \
 
 RESOURCES := \
 
@@ -134,7 +134,7 @@ ifeq (/bin,$(findstring /bin,$(SHELL)))
 endif
 
 $(TARGET): $(GCH) ${CUSTOMFILES} $(OBJECTS) $(LDDEPS) $(RESOURCES)
-	@echo Linking test_opendialogmultiple
+	@echo Linking test_pickfolder
 	$(SILENT) $(LINKCMD)
 	$(POSTBUILDCMDS)
 
@@ -155,7 +155,7 @@ else
 endif
 
 clean:
-	@echo Cleaning test_opendialogmultiple
+	@echo Cleaning test_pickfolder
 ifeq (posix,$(SHELLTYPE))
 	$(SILENT) rm -f  $(TARGET)
 	$(SILENT) rm -rf $(OBJDIR)
@@ -177,7 +177,7 @@ $(GCH): $(PCH)
 	$(SILENT) $(CC) -x c-header $(ALL_CFLAGS) -o "$@" -MF "$(@:%.gch=%.d)" -c "$<"
 endif
 
-$(OBJDIR)/test_opendialogmultiple.o: ../../test/test_opendialogmultiple.c
+$(OBJDIR)/test_pickfolder.o: ../../test/test_pickfolder.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(ALL_CFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 

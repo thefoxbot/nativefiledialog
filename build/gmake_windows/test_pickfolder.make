@@ -13,8 +13,8 @@ endif
 ifeq ($(config),release_x64)
   RESCOMP = windres
   TARGETDIR = ../bin
-  TARGET = $(TARGETDIR)/test_opendialogmultiple.exe
-  OBJDIR = ../obj/x64/Release/test_opendialogmultiple
+  TARGET = $(TARGETDIR)/test_pickfolder.exe
+  OBJDIR = ../obj/x64/Release/test_pickfolder
   DEFINES += -DNDEBUG
   INCLUDES += -I../../src/include
   FORCE_INCLUDE +=
@@ -40,8 +40,8 @@ endif
 ifeq ($(config),release_x86)
   RESCOMP = windres
   TARGETDIR = ../bin
-  TARGET = $(TARGETDIR)/test_opendialogmultiple.exe
-  OBJDIR = ../obj/x86/Release/test_opendialogmultiple
+  TARGET = $(TARGETDIR)/test_pickfolder.exe
+  OBJDIR = ../obj/x86/Release/test_pickfolder
   DEFINES += -DNDEBUG
   INCLUDES += -I../../src/include
   FORCE_INCLUDE +=
@@ -67,8 +67,8 @@ endif
 ifeq ($(config),debug_x64)
   RESCOMP = windres
   TARGETDIR = ../bin
-  TARGET = $(TARGETDIR)/test_opendialogmultiple_d.exe
-  OBJDIR = ../obj/x64/Debug/test_opendialogmultiple
+  TARGET = $(TARGETDIR)/test_pickfolder_d.exe
+  OBJDIR = ../obj/x64/Debug/test_pickfolder
   DEFINES += -DDEBUG
   INCLUDES += -I../../src/include
   FORCE_INCLUDE +=
@@ -94,8 +94,8 @@ endif
 ifeq ($(config),debug_x86)
   RESCOMP = windres
   TARGETDIR = ../bin
-  TARGET = $(TARGETDIR)/test_opendialogmultiple_d.exe
-  OBJDIR = ../obj/x86/Debug/test_opendialogmultiple
+  TARGET = $(TARGETDIR)/test_pickfolder_d.exe
+  OBJDIR = ../obj/x86/Debug/test_pickfolder
   DEFINES += -DDEBUG
   INCLUDES += -I../../src/include
   FORCE_INCLUDE +=
@@ -119,7 +119,7 @@ all: $(TARGETDIR) $(OBJDIR) prebuild prelink $(TARGET)
 endif
 
 OBJECTS := \
-	$(OBJDIR)/test_opendialogmultiple.o \
+	$(OBJDIR)/test_pickfolder.o \
 
 RESOURCES := \
 
@@ -134,7 +134,7 @@ ifeq (/bin,$(findstring /bin,$(SHELL)))
 endif
 
 $(TARGET): $(GCH) ${CUSTOMFILES} $(OBJECTS) $(LDDEPS) $(RESOURCES)
-	@echo Linking test_opendialogmultiple
+	@echo Linking test_pickfolder
 	$(SILENT) $(LINKCMD)
 	$(POSTBUILDCMDS)
 
@@ -155,7 +155,7 @@ else
 endif
 
 clean:
-	@echo Cleaning test_opendialogmultiple
+	@echo Cleaning test_pickfolder
 ifeq (posix,$(SHELLTYPE))
 	$(SILENT) rm -f  $(TARGET)
 	$(SILENT) rm -rf $(OBJDIR)
@@ -177,7 +177,7 @@ $(GCH): $(PCH)
 	$(SILENT) $(CC) -x c-header $(ALL_CFLAGS) -o "$@" -MF "$(@:%.gch=%.d)" -c "$<"
 endif
 
-$(OBJDIR)/test_opendialogmultiple.o: ../../test/test_opendialogmultiple.c
+$(OBJDIR)/test_pickfolder.o: ../../test/test_pickfolder.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(ALL_CFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 
