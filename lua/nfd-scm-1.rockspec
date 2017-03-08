@@ -13,7 +13,7 @@ dependencies = {
    "lua ~> 5.1"
 }
 -- TODO: We can probably use the linux makefile for freebsd.
-supported_platforms = { "linux", "macosx" }
+supported_platforms = { "linux", "macosx", "windows" }
 external_dependencies = {
    platforms = {
       linux = {
@@ -39,19 +39,17 @@ build = {
          },
       },
       windows = {
-         type = "builtin",
-         modules = {
-            nfd = {
-               sources = {
-                  "src/nfd_common.c",
-                  "src/nfd_win.cpp",
-                  "lua/nfd_wrap_lua.c"
-               },
-               defines = {"_CRT_SECURE_NO_WARNINGS"},
-               libraries = {"comctl32"},
-               incdirs = {"src/include"}
-            }
-         }
+         type = "make",
+         makefile = "lua/Makefile.win",
+         build_variables = {
+            CFLAGS="$(CFLAGS)",
+            LIBFLAG="$(LIBFLAG)",
+            LUA_LIBDIR="$(LUA_LIBDIR)",
+            LUA_INCDIR="$(LUA_INCDIR)",
+         },
+         install_variables = {
+            INST_LIBDIR="$(LIBDIR)",
+         },
       },
       macosx = {
          type = "make",

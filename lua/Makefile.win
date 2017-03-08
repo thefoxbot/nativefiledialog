@@ -1,0 +1,25 @@
+# Makefile for the Lua bindings of nativefiledialog. Links to Win32 stuff, iunno
+
+NFD_CFLAGS=/D_CRT_SECURE_NO_WARNINGS /I"src/include"
+
+all: nfd.dll
+
+nfd.dll: nfd_common.obj nfd_win.obj nfd_wrap_lua.obj
+	link /nologo /dll /export:"luaopen_nfd" /out:"nfd.dll" "Ole32.lib" "Shell32.lib" "$(LUA_LIBDIR)/lua51.lib" nfd_common.obj nfd_win.obj nfd_wrap_lua.obj
+
+nfd_wrap_lua.obj: lua/nfd_wrap_lua.c
+	cl /c $(CFLAGS) $(NFD_CFLAGS) /I"$(LUA_INCDIR)" "lua/nfd_wrap_lua.c" /Fo"$@"
+
+nfd_common.obj: src/nfd_common.c
+	cl /c $(CFLAGS) $(NFD_CFLAGS) /I"$(LUA_INCDIR)" "src/nfd_common.c" /Fo"$@"
+
+nfd_win.obj: src/nfd_win.cpp
+	cl /c $(CFLAGS) $(NFD_CFLAGS) /I"$(LUA_INCDIR)" src/nfd_win.cpp /Fo$@
+
+.PHONY: clean
+
+clean: 
+	rm nfd_common.obj nfd_win.obj nfd_wrap_lua.obj nfd.so
+
+install: nfd.dll
+	copy "nfd.dll" "$(INST_LIBDIR)"
