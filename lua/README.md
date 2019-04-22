@@ -11,7 +11,7 @@ $ luarocks install nfd
 to install the latest source version:
 
 ```
-$ luarocks install https://raw.githubusercontent.com/Alloyed/nativefiledialog/master/lua/nfd-scm-1.rockspec
+$ luarocks install https://raw.githubusercontent.com/Vexatos/nativefiledialog/master/lua/nfd-scm-1.rockspec
 ```
 
 If you already have a tree checked out, for example if you are directly
